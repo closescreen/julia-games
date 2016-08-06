@@ -1,0 +1,46 @@
+#!/usr/bin/env julia
+
+kubik()=abs(round(Int,rand()*10)-1)
+
+mem = [string(kubik()) for x in 1:5]
+#info(mem)
+ans1=""
+
+bik=0
+kor=0
+
+while (bik!=5)
+bik=0
+kor=0
+while(ans1|>length != mem|>length)
+ println("Введите $(length(mem)) чисел")
+ ans1 = readline() |> chomp
+ if ans1|>length!=mem|>length
+    println("Нет, вы ввели $(length(ans1)) чисел, а нужно $(mem|>length)")
+ end
+ if ismatch(r"\D",ans1)
+    println("Нужно вводить ТОЛЬКО цифры")
+ end
+end
+
+for a in 1:length(ans1)
+    if string(ans1[a])==mem[a]
+	bik+=1
+	#info("biks $(ans1[a])==$(mem[a])")
+	continue
+    else
+	for m in 1:length(mem)
+	    if mem[m]==string(ans1[a])
+		kor+=1
+		#info("kor $(mem[m]) == $(ans1[a])")
+		break
+	    else
+		#info("NO $(mem[m]) != $(ans1[a])")
+	    end
+	end
+    end
+end
+print("$bik быков, $kor коров.")
+ans1=""
+end
+println("Вы выиграли!")
