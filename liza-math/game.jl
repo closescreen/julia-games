@@ -21,16 +21,30 @@ O       O
 "
 
 r10() = round(Int,rand()*10)
+r100() = round(Int,rand()*100)
 
 
 tasks = Array[ 
- Array[ #level 1
+ Array[ # level 1:
   [ (x,y)->"$x+$y=?", r10, r10, a->a[1]+a[2] ],
   [ (x,y)->"$x-$y=?", r10, r10, a->a[1]-a[2] ]
  ],
- Array[ # l2
+ Array[ # level 2:
   [ (x,y)->"$x*$y=?", r10, r10, a->a[1]*a[2] ]
- ]
+ ],
+ Array[ # level3:
+  [ (x,y,z)->"$x+$y-$z=?", r10, r10, r10, a->a[1]+a[2]-a[3] ],
+  [ (x,y,z)->"$x-$y+$z=?", r10, r10, r10, a->a[1]-a[2]+a[3] ]
+ ],
+ Array[ # level 4:
+  [ (x,y)->"$x+$y=?", r100, r100, a->a[1]+a[2] ],
+  [ (x,y)->"$x-$y=?", r100, r100, a->a[1]-a[2] ]
+ ],
+ Array[ # level 5:
+  [ (x,y)->"$x*$y=?", r100, r10, a->a[1]*a[2] ]
+ ],
+ 
+ 
 ]
 
 function task()
