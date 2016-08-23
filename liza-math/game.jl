@@ -1,11 +1,14 @@
-#!/usr/bin/env julia
+#!/home/ira/bin/julia --color=yes
+
 
 yes() = "
 O           
  O     O
   O   O
    O O
-    O" |> println
+    O
+
+"
 
 
 no() = "
@@ -13,19 +16,25 @@ O       O
   O   O
     O
   O   O
-O       O " |> println
+O       O
 
+"
 
 r10() = round(Int,rand()*10)
 
 
-tasks = Array[
- [ (x,y)->"$x+$y=?", r10, r10, a->a[1]+a[2] ],
- [ (x,y)->"$x-$y=?", r10, r10, a->a[1]-a[2] ]
+tasks = Array[ 
+ Array[ #level 1
+  [ (x,y)->"$x+$y=?", r10, r10, a->a[1]+a[2] ],
+  [ (x,y)->"$x-$y=?", r10, r10, a->a[1]-a[2] ]
+ ],
+ Array[ # l2
+  [ (x,y)->"$x*$y=?", r10, r10, a->a[1]*a[2] ]
+ ]
 ]
 
 function task()
- let l = rand(tasks);
+ let l = rand(tasks[level]);
     args = [ f() for f in l[2:(end-1)] ];
     #println("$args")
     pr = l[1](args...);
@@ -33,14 +42,43 @@ function task()
 
     #println("$pr $args $answ")
     println(pr)
-    otw=parse(chomp(readline(STDIN)))
+    otw=parse(Int, chomp(readline(STDIN)))
 
-    otw==answ ? yes() : no()
+    if otw==answ 
+	print_with_color(:cyan, yes())
+	return 1
+    else
+	print_with_color(:magenta, no())
+	return -2
+    end
+ end
 end
+
+
+rate = 1
+level = 1
+for i in 1:10
+    rate += (task()*level)
+    level = round(Int,rate/3)
+    if level<1 level=1 end
+    println("""Очки: $rate
+	    Уровень: $level
+	    =================""")
+    if rate < 0
+	print_with_color(:red, """------------
+	 Вы проиграли
+	 --------------
+	 """)
+	exit()
+    end	
+    if level>length(tasks)
+	print_with_color(:green, """ !!!!!!!!!!!!!!
+	Вы выиграли !
+	!!!!!!!!!!!!!!!
+	""")
+	exit()
+    end	
 end
-
-
-for i in 1:3 task() end
 
 
 
