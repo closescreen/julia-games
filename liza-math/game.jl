@@ -21,30 +21,39 @@ O       O
 "
 
 r10() = round(Int,rand()*10)
-r100() = round(Int,rand()*100)
+r100() = round(Int,rand()*90+10)
 
 
 tasks = Array[ 
- Array[ # level 1:
+ Array[ # level:
   [ (x,y)->"$x+$y=?", r10, r10, a->a[1]+a[2] ],
   [ (x,y)->"$x-$y=?", r10, r10, a->a[1]-a[2] ]
  ],
- Array[ # level 2:
+ Array[ # level:
   [ (x,y)->"$x*$y=?", r10, r10, a->a[1]*a[2] ]
  ],
- Array[ # level3:
+ Array[ # level:
   [ (x,y,z)->"$x+$y-$z=?", r10, r10, r10, a->a[1]+a[2]-a[3] ],
   [ (x,y,z)->"$x-$y+$z=?", r10, r10, r10, a->a[1]-a[2]+a[3] ]
  ],
- Array[ # level 4:
+ Array[ # level:
+  [ (x,y,z,k)->"($x+$y)-($z+$k)=?", r10, r10, r10, r10, a->(a[1]+a[2])-(a[3]+a[4]) ],
+  [ (x,y,z,k)->"($x-$y)+($z-$k)=?", r10, r10, r10, r10, a->(a[1]-a[2])+(a[3]-a[4]) ]
+ ],
+ Array[
+  [ (x,y,z)->"$x-($y*$z)=?", r100, r10, r10, a->a[1]-(a[2]*a[3]) ] 
+ ],
+ Array[ # level:
   [ (x,y)->"$x+$y=?", r100, r100, a->a[1]+a[2] ],
   [ (x,y)->"$x-$y=?", r100, r100, a->a[1]-a[2] ]
  ],
- Array[ # level 5:
-  [ (x,y)->"$x*$y=?", r100, r10, a->a[1]*a[2] ]
- ],
- 
- 
+ Array[ # level:
+  [ (x,y,z)->"$x*$y+$z=?", r10, r10,r10, a->a[1]*a[2]+a[3] ]
+ ]
+# ,
+# Array[ # level:
+#  [ (x,y)->"$x*$y=?", r100, r10, a->a[1]*a[2] ]
+# ],
 ]
 
 function task()
@@ -71,8 +80,8 @@ end
 
 rate = 1
 level = 1
-for i in 1:10
-    rate += (task()*level)
+while true
+    rate += task()
     level = round(Int,rate/3)
     if level<1 level=1 end
     println("""Очки: $rate
