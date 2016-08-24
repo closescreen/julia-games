@@ -13,5 +13,6 @@ for n in games|>keys|>collect|>sort
 end
 println("0 - выход")
 
-gamen = parse(Int, STDIN|>readline|>chomp)
-selgame = get(exit, games, gamen) 
+gamen = parse(Int, STDIN|>readline|>chomp)::Int # польз вводит N игры
+selected_game = get(exit, games, gamen) # данные об игре
+selected_game[:file]|>include # выполнить файл определений игры
