@@ -1,3 +1,5 @@
+include("types.jl")
+
 games = let ff = map(chomp, `find . -name "*.def.jl"`|>readlines);
   #info(ff)
   [ n=>Dict(
